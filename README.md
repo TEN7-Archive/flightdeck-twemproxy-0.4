@@ -29,7 +29,7 @@ All configuration is done as items under the `flightdeck_twemproxy` variable. Se
 
 You can provide this file in one of three ways to the container:
 
-* Mount the configuration file at path `/config/twemproxy/flightdecktwemproxy.yml` inside the container using a bind mount, configmap, or secret.
+* Mount the configuration file at path `/config/twemproxy/flightdeck-twemproxy.yml` inside the container using a bind mount, configmap, or secret.
 * Mount the config file anywhere in the container, and set the `FLIGHTDECK_CONFIG_FILE` environment variable to the path of the file.
 * Encode the contents of `flightdeck-twemproxy.yml` as base64 and assign the result to the `FLIGHTDECK_CONFIG` environment variable.
 
@@ -50,12 +50,39 @@ Where:
 * **flightdeck_twemproxy.mbufSize** is the mbuf size. Optional, defaults to `16384`.
 * **flightdeck_twemproxy.statsPort** is the port on which to access stats. Optional, defaults to `22222`.
 
+### Providing configuration inline
+
+Twemproxy accepts a separate YAML file as configuration. In some circumstances, you may wish to include that configuration inline with the flightdeck-twemproxy.yml instead. One such use is if you need to pass the configuration via environment variables such as FLIGHTDECK_CONFIG. To do this, use the `conf` key:
+
+```yaml
+---
+flightdeck_twemproxy:
+  conf: |
+    alpha:
+      listen: 127.0.0.1:22121
+      hash: fnv1a_64
+      distribution: ketama
+      auto_eject_hosts: true
+      redis: false
+      server_retry_timeout: 2000
+      server_failure_limit: 1
+      servers:
+       - memcache-0:11211:1
+  statsInterval: "30000"
+  mbufSize: "16384"
+  statsPort: "22222"
+```
+
+Where:
+* **flightdeck_twemproxy.conf** if you twemproxy configuration YAML.
+
+For a full list of twemproxy configuration values, see [their documentation](https://github.com/twitter/twemproxy).
+
 ## Part of Flight Deck
 
 This container is part of the [Flight Deck library](https://github.com/ten7/flight-deck) of containers for Drupal local development and production workloads on Docker, Swarm, and Kubernetes.
 
 Flight Deck is used and supported by [TEN7](https://ten7.com/).
-
 
 ## Debugging
 

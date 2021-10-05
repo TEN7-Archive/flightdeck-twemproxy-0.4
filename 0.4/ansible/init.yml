@@ -1,6 +1,18 @@
 ---
 - hosts: twemproxy
   tasks:
+    - name: Template the twemproxy conf if given inline
+      template:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: "twemproxy"
+        group: "twemproxy"
+        mode: "u=rwx,g=rwx,o="
+      loop:
+        - src: "templates/twemproxy-default.yml.j2"
+          dest: "/etc/twemproxy/twemproxy-default.yml"
+      when:
+        - flightdeck_twemproxy.conf is defined
     - name: Deploy key scripts.
       template:
         src: "{{ item.src }}"

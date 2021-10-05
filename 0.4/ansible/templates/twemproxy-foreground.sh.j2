@@ -6,7 +6,7 @@ SCRIPT_NAME=`basename "$0"`
 echo "$SCRIPT_NAME: Starting twemproxy (nutcracker) in the foreground..."
 
 nutcracker {% if (flightdeck_debug | default(false) == true) or (lookup('env', 'ANSIBLE_VERBOSITY') | default(false, true)) %}--verbose=11{% endif %} \
-  --conf-file=={{ flightdeck_twemproxy.confFile | default('/config/twemproxy/twemproxy.yml') }} \
+  --conf-file={{ flightdeck_twemproxy.confFile | default('/etc/twemproxy/twemproxy-default.yml') }} \
   --stats-interval={{ flightdeck_twemproxy.statsInterval | default('30000') }} \
   --mbuf-size={{ flightdeck_twemproxy.mbufSize | default('16384') }} \
-  --stats-port=N={{ flightdeck_twemproxy.statsPort | default('22222') }}
+  --stats-port={{ flightdeck_twemproxy.statsPort | default('22222') }}

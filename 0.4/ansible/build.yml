@@ -30,6 +30,8 @@
       loop:
         - src: "templates/twemproxy-foreground.sh.j2"
           dest: "/etc/twemproxy/twemproxy-foreground.sh"
+        - src: "templates/twemproxy-default.yml.j2"
+          dest: "/etc/twemproxy/twemproxy-default.yml"
   handlers:
     - name: clear apk cache
       file:
