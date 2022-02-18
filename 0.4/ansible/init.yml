@@ -10,7 +10,7 @@
         mode: "u=rwx,g=rwx,o="
       loop:
         - src: "templates/twemproxy-default.yml.j2"
-          dest: "/etc/twemproxy/twemproxy-default.yml"
+          dest: "{{ flightdeck_twemproxy.confFile | default('/etc/twemproxy/twemproxy-default.yml') }}"
       when:
         - flightdeck_twemproxy.conf is defined
     - name: Deploy key scripts.

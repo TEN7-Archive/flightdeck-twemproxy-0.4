@@ -1,5 +1,5 @@
 ---
-flighdeck_motd_name: twemproxy 6.6
+flighdeck_motd_name: twemproxy 0.4
 
 flightdeck_groups:
   - name: "twemproxy"
@@ -9,43 +9,47 @@ flightdeck_users:
     group: "twemproxy"
     home: "/home/twemproxy"
 
-flightdeck_root_prompt: '\u@flightdeck-twemproxy-1.6:\w# '
-flightdeck_user_prompt: '\u@flightdeck-twemproxy-1.6:\w$ '
+flightdeck_root_prompt: '\u@flightdeck-twemproxy-0.4:\w# '
+flightdeck_user_prompt: '\u@flightdeck-twemproxy-0.4:\w$ '
 
 flightdeck_motd_links:
   - name: 'Code & docs'
-    url: 'https://github.com/ten7/flightdeck-twemproxy-1.6'
+    url: 'https://github.com/ten7/flightdeck-twemproxy-0.4'
   - name: ' Learn more'
     url: 'https://flightdeck.ten7.com/'
 
 flightdeck_init_commands: |
-  if [ -n "${FLIGHTDECK_CONFIG}" ]; then
-    config_file=$(mktemp "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
-    echo "$FLIGHTDECK_CONFIG" | base64 -d > $config_file
-    ansible-playbook -i /ansible/inventories/all.ini -e "@${config_file}" /ansible/init.yml
-  elif [ -f "${FLIGHTDECK_CONFIG_FILE}" ]; then
-    ansible-playbook -i /ansible/inventories/all.ini -e "@${FLIGHTDECK_CONFIG_FILE}" /ansible/init.yml
-  elif [ -f "/config/twemproxy/flightdeck-twemproxy.yml" ]; then
-    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/twemproxy/flightdeck-twemproxy.yml" /ansible/init.yml
-  elif [ -f "/config/twemproxy/flight-deck-twemproxy.yml" ]; then
-    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/twemproxy/flight-deck-twemproxy.yml" /ansible/init.yml
-  else
-    ansible-playbook -i /ansible/inventories/all.ini /ansible/init.yml
+  if [ -f "/ansible/init.yml" ]; then
+    if [ -n "${FLIGHTDECK_CONFIG}" ]; then
+      config_file=$(mktemp "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
+      echo "$FLIGHTDECK_CONFIG" | base64 -d > $config_file
+      ansible-playbook -i /ansible/inventories/all.ini -e "@${config_file}" /ansible/init.yml
+    elif [ -f "${FLIGHTDECK_CONFIG_FILE}" ]; then
+      ansible-playbook -i /ansible/inventories/all.ini -e "@${FLIGHTDECK_CONFIG_FILE}" /ansible/init.yml
+    elif [ -f "/config/twemproxy/flightdeck-twemproxy.yml" ]; then
+      ansible-playbook -i /ansible/inventories/all.ini -e "@/config/twemproxy/flightdeck-twemproxy.yml" /ansible/init.yml
+    elif [ -f "/config/twemproxy/flight-deck-twemproxy.yml" ]; then
+      ansible-playbook -i /ansible/inventories/all.ini -e "@/config/twemproxy/flight-deck-twemproxy.yml" /ansible/init.yml
+    else
+      ansible-playbook -i /ansible/inventories/all.ini /ansible/init.yml
+    fi
   fi
 
 flightdeck_run_commands: |
-  if [ -n "${FLIGHTDECK_CONFIG}" ]; then
-    config_file=$(mktemp "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
-    echo "$FLIGHTDECK_CONFIG" | base64 -d > $config_file
-    ansible-playbook -i /ansible/inventories/all.ini -e "@${config_file}" /ansible/run.yml
-  elif [ -f "${FLIGHTDECK_CONFIG_FILE}" ]; then
-    ansible-playbook -i /ansible/inventories/all.ini -e "@${FLIGHTDECK_CONFIG_FILE}" /ansible/run.yml
-  elif [ -f "/config/twemproxy/flightdeck-twemproxy.yml" ]; then
-    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/twemproxy/flightdeck-twemproxy.yml" /ansible/run.yml
-  elif [ -f "/config/twemproxy/flight-deck-twemproxy.yml" ]; then
-    ansible-playbook -i /ansible/inventories/all.ini -e "@/config/twemproxy/flight-deck-twemproxy.yml" /ansible/run.yml
-  else
-    ansible-playbook -i /ansible/inventories/all.ini /ansible/run.yml
+  if [ -f "/ansible/run.yml" ]; then
+    if [ -n "${FLIGHTDECK_CONFIG}" ]; then
+      config_file=$(mktemp "${TMPDIR:-/tmp/}$(basename $0).XXXXXXXXXXXX")
+      echo "$FLIGHTDECK_CONFIG" | base64 -d > $config_file
+      ansible-playbook -i /ansible/inventories/all.ini -e "@${config_file}" /ansible/run.yml
+    elif [ -f "${FLIGHTDECK_CONFIG_FILE}" ]; then
+      ansible-playbook -i /ansible/inventories/all.ini -e "@${FLIGHTDECK_CONFIG_FILE}" /ansible/run.yml
+    elif [ -f "/config/twemproxy/flightdeck-twemproxy.yml" ]; then
+      ansible-playbook -i /ansible/inventories/all.ini -e "@/config/twemproxy/flightdeck-twemproxy.yml" /ansible/run.yml
+    elif [ -f "/config/twemproxy/flight-deck-twemproxy.yml" ]; then
+      ansible-playbook -i /ansible/inventories/all.ini -e "@/config/twemproxy/flight-deck-twemproxy.yml" /ansible/run.yml
+    else
+      ansible-playbook -i /ansible/inventories/all.ini /ansible/run.yml
+    fi
   fi
 
 flightdeck_path:
